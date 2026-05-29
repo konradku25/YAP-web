@@ -23,7 +23,7 @@ export default function App() {
   }, [theme]);
 
   const applyRemoteRef = useRef(null);
-  const { status, peers, sendState } = useSync(SESSION_ID, (s) => applyRemoteRef.current?.(s));
+  const { status, peers, devices, sendState } = useSync(SESSION_ID, (s) => applyRemoteRef.current?.(s));
   const { state, start, pause, reset, skip, applyRemote } = useTimer(sendState);
   applyRemoteRef.current = applyRemote;
 
@@ -31,6 +31,7 @@ export default function App() {
     <TimerScreen
       state={state}
       peers={peers}
+      devices={devices}
       syncStatus={status}
       sessionId={SESSION_ID}
       theme={theme}

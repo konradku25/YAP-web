@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-// Update this after deploying to Render
 const SERVER_WS = import.meta.env.VITE_SERVER_WS ?? 'wss://yap-server-bnog.onrender.com';
 
 export function useSync(sessionId, onRemoteState) {
-  const [status, setStatus] = useState('disconnected'); // connecting | connected | disconnected
+  const [status, setStatus] = useState('disconnected');
   const [peers, setPeers] = useState(0);
+  const [devices, setDevices] = useState([]);
   const wsRef = useRef(null);
   const pingRef = useRef(null);
   const onRemoteRef = useRef(onRemoteState);
@@ -19,9 +19,8 @@ export function useSync(sessionId, onRemoteState) {
     wsRef.current = ws;
 
     ws.onopen = () => {
-      ws.send(JSON.stringify({ type: 'join', sessionId }));
+      ws.send(JSON.stringify({ type: 'join', sessionId, device: 'web' }));
       setStatus('connected');
-      // Keepalive ping every 25s
       pingRef.current = setInterval(() => ws.send(JSON.stringify({ type: 'ping' })), 25000);
     };
 
@@ -29,17 +28,14 @@ export function useSync(sessionId, onRemoteState) {
       let msg;
       try { msg = JSON.parse(e.data); } catch { return; }
       if (msg.type === 'state') onRemoteRef.current?.(msg.payload);
-      if (msg.type === 'peers') setPeers(msg.count);
+      if (msg.type === 'peers') {
+        setPeers(msg.count);
+        setDevices(msg.devices ?? []);
+      }
     };
 
-    ws.onclose = () => {
-      setStatus('disconnected');
-      clearInterval(pingRef.current);
-    };
-
-    ws.onerror = () => {
-      setStatus('disconnected');
-    };
+    ws.onclose = () => { setStatus('disconnected'); clearInterval(pingRef.current); };
+    ws.onerror = () => { setStatus('disconnected'); };
 
     return () => {
       clearInterval(pingRef.current);
@@ -50,12 +46,8 @@ export function useSync(sessionId, onRemoteState) {
   const sendState = useCallback((timerState) => {
     const ws = wsRef.current;
     if (!ws || ws.readyState !== WebSocket.OPEN) return;
-    ws.send(JSON.stringify({
-      type: 'state',
-      sessionId,
-      payload: timerState,
-    }));
+    ws.send(JSON.stringify({ type: 'state', sessionId, payload: timerState }));
   }, [sessionId]);
 
-  return { status, peers, sendState };
+  return { status, peers, devices, sendState };
 }

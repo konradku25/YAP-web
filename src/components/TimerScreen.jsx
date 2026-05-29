@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import { PHASES } from '../hooks/useTimer.js';
+import Background from './Background.jsx';
 
-const STATUS_LABEL = { connected: '🟢', connecting: '🟡', disconnected: '🔴' };
+const DEVICE_ICON = { web: '🖥️', android: '📱' };
 const THEME_OPTIONS = [
   { value: 'dark',   label: '🌙 Dark'   },
   { value: 'light',  label: '☀️ Light'  },
@@ -12,7 +13,7 @@ const THEME_OPTIONS = [
 const WEB_URL = 'https://yap-web-flame.vercel.app';
 
 export default function TimerScreen({
-  state, peers, syncStatus, sessionId,
+  state, peers, devices, syncStatus, sessionId,
   theme, onThemeChange,
   onStart, onPause, onReset, onSkip,
 }) {
@@ -22,7 +23,7 @@ export default function TimerScreen({
   const isWork = phase === 'WORK';
   const phaseLabel = PHASES[phase].label.toUpperCase();
 
-  const [showSync, setShowSync] = useState(false);
+  const [showSync, setShowSync]   = useState(false);
   const [showTheme, setShowTheme] = useState(false);
   const [qrDataUrl, setQrDataUrl] = useState('');
 
@@ -30,22 +31,38 @@ export default function TimerScreen({
 
   useEffect(() => {
     QRCode.toDataURL(syncUrl, {
-      width: 200,
-      margin: 1,
-      color: { dark: '#000000', light: '#ffffff' },
+      width: 180, margin: 1,
+      color: { dark: '#1a1114', light: '#ffffff' },
     }).then(setQrDataUrl);
   }, [syncUrl]);
 
+  const syncConnected = syncStatus === 'connected' && peers > 0;
+
   return (
-    <div className={`timer-screen ${isWork ? 'phase-work' : 'phase-break'}`}>
-      <header className="timer-header">
+    <div className={`screen ${isWork ? 'phase-work' : 'phase-break'}`}>
+      <Background isWork={isWork} />
+
+      {/* ── Header ── */}
+      <header className="glass-bar">
         <span className="app-name">YAP</span>
 
+        <div className="header-center">
+          {syncConnected && (
+            <div className="device-chips">
+              {devices.map((d, i) => (
+                <span key={i} className="device-chip">
+                  {DEVICE_ICON[d] ?? '❓'} {d}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="header-actions">
-          {/* Theme picker */}
+          {/* Theme */}
           <div className="dropdown-wrap">
-            <button className="btn-ghost" onClick={() => { setShowTheme(v => !v); setShowSync(false); }}>
-              {THEME_OPTIONS.find(t => t.value === theme)?.label ?? '🌙 Dark'}
+            <button className="pill-btn ghost" onClick={() => { setShowTheme(v => !v); setShowSync(false); }}>
+              {THEME_OPTIONS.find(t => t.value === theme)?.label ?? '🌙'}
             </button>
             {showTheme && (
               <div className="dropdown">
@@ -62,38 +79,38 @@ export default function TimerScreen({
             )}
           </div>
 
-          {/* Sync button */}
+          {/* Sync */}
           <button
-            className={`btn-ghost sync-btn ${syncStatus === 'connected' ? 'synced' : ''}`}
+            className={`pill-btn ghost ${syncConnected ? 'accent' : ''}`}
             onClick={() => { setShowSync(v => !v); setShowTheme(false); }}
           >
-            {STATUS_LABEL[syncStatus]} Sync {peers > 0 ? `· ${peers}` : ''}
+            {syncConnected ? `🟢 ${peers} synced` : '⚡ Sync'}
           </button>
         </div>
       </header>
 
-      {/* Sync panel */}
+      {/* ── Sync drawer ── */}
       {showSync && (
-        <div className="sync-panel">
+        <div className="sync-drawer glass-panel">
           <p className="sync-hint">
-            Open <strong>YAP</strong> on your phone, tap <strong>Sync</strong>, and enter the code below.
+            Open <strong>YAP</strong> on your phone → tap <strong>Sync</strong> → enter the code.
           </p>
-          <div className="sync-row">
-            {qrDataUrl && (
-              <img src={qrDataUrl} alt="Session QR" className="qr-img" />
-            )}
-            <div className="sync-info">
+          <div className="sync-body">
+            {qrDataUrl && <img src={qrDataUrl} alt="QR" className="qr-img" />}
+            <div className="sync-details">
               <p className="sync-label">Session code</p>
               <p className="sync-code">{sessionId}</p>
-              <p className="sync-status">
-                {STATUS_LABEL[syncStatus]}&nbsp;
-                {syncStatus === 'connected' ? `${peers} device${peers !== 1 ? 's' : ''} connected` : syncStatus}
-              </p>
+              <div className="sync-devices">
+                {syncConnected
+                  ? devices.map((d, i) => <span key={i} className="device-chip">{DEVICE_ICON[d] ?? '❓'} {d}</span>)
+                  : <span className="sync-waiting">Waiting for device…</span>}
+              </div>
             </div>
           </div>
         </div>
       )}
 
+      {/* ── Timer ── */}
       <main className="timer-main">
         <p className="phase-label">{phaseLabel}</p>
 
@@ -110,12 +127,14 @@ export default function TimerScreen({
           })}
         </div>
 
-        <div className="controls">
-          <button className="btn-icon" onClick={onReset} title="Reset">↺</button>
-          <button className="btn-primary large" onClick={isRunning ? onPause : onStart}>
-            {isRunning ? '⏸ Pause' : '▶ Start'}
+        {/* Glass control bar */}
+        <div className="controls-glass">
+          <button className="icon-btn" onClick={onReset} title="Reset">↺</button>
+          <button className="play-btn" onClick={isRunning ? onPause : onStart}>
+            <span className="play-icon">{isRunning ? '⏸' : '▶'}</span>
+            <span>{isRunning ? 'Pause' : 'Start'}</span>
           </button>
-          <button className="btn-icon" onClick={onSkip} title="Skip">⏭</button>
+          <button className="icon-btn" onClick={onSkip} title="Skip">⏭</button>
         </div>
       </main>
     </div>

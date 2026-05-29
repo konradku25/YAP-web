@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import TimerScreen from './components/TimerScreen.jsx';
 import { useTimer } from './hooks/useTimer.js';
 import { useSync } from './hooks/useSync.js';
@@ -12,12 +12,21 @@ function generateSessionId() {
 const SESSION_ID = generateSessionId();
 
 export default function App() {
-  const { colors, setPhaseColor, resetAll } = usePhaseColors();
+  const { colors, setPhaseColor, resetAll, applyRemoteColors } = usePhaseColors();
 
   const applyRemoteRef = useRef(null);
-  const { status, peers, devices, sendState } = useSync(SESSION_ID, (s) => applyRemoteRef.current?.(s));
+  const { status, peers, devices, sendState, sendTheme } = useSync(
+    SESSION_ID,
+    (s) => applyRemoteRef.current?.(s),
+    applyRemoteColors,
+  );
   const { state, start, pause, reset, skip, applyRemote } = useTimer(sendState);
   applyRemoteRef.current = applyRemote;
+
+  // Push our colors whenever we first connect or whenever they change
+  useEffect(() => {
+    if (status === 'connected') sendTheme(colors);
+  }, [status]); // eslint-disable-line
 
   return (
     <TimerScreen
@@ -27,8 +36,14 @@ export default function App() {
       syncStatus={status}
       sessionId={SESSION_ID}
       colors={colors}
-      onSetPhaseColor={setPhaseColor}
-      onResetColors={resetAll}
+      onSetPhaseColor={(phase, field, value) => {
+        setPhaseColor(phase, field, value);
+        if (status === 'connected') sendTheme({ ...colors, [phase]: { ...colors[phase], [field]: value } });
+      }}
+      onResetColors={() => {
+        resetAll();
+        if (status === 'connected') sendTheme(null); // null = reset signal
+      }}
       onStart={start}
       onPause={pause}
       onReset={reset}

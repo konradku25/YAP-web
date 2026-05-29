@@ -40,5 +40,19 @@ export function usePhaseColors() {
     setColors(DEFAULTS);
   }, []);
 
-  return { colors, setPhaseColor, resetAll };
+  // Apply a full theme object received from sync (same shape as DEFAULTS)
+  const applyRemoteColors = useCallback((remote) => {
+    try {
+      const merged = { ...DEFAULTS };
+      for (const key of PHASE_KEYS) {
+        if (remote[key]?.base && remote[key]?.accent) {
+          merged[key] = { base: remote[key].base, accent: remote[key].accent };
+        }
+      }
+      localStorage.setItem('yap-colors-v2', JSON.stringify(merged));
+      setColors(merged);
+    } catch {}
+  }, []);
+
+  return { colors, setPhaseColor, resetAll, applyRemoteColors };
 }

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 // Update this after deploying to Render
-const SERVER_WS = import.meta.env.VITE_SERVER_WS ?? 'wss://yap-server.onrender.com';
+const SERVER_WS = import.meta.env.VITE_SERVER_WS ?? 'wss://yap-server-bnog.onrender.com';
 
 export function useSync(sessionId, onRemoteState) {
   const [status, setStatus] = useState('disconnected'); // connecting | connected | disconnected

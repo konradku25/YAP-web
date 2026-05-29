@@ -1,45 +1,50 @@
 import { useState } from 'react';
 import { PHASE_KEYS, PHASE_LABELS, DEFAULTS } from '../hooks/usePhaseColors.js';
-import { blobsFromAccent, readableAccent } from '../utils/colorUtils.js';
 
 export default function ColorSettings({ colors, onSetPhaseColor, onResetAll, onClose }) {
   const [activePhase, setActivePhase] = useState('WORK');
   const scheme = colors[activePhase];
-  const previewAccent  = readableAccent(scheme.accent, scheme.base);
-  const previewBlobs   = blobsFromAccent(scheme.accent);
 
   return (
-    <div className="settings-panel glass-panel">
-      <div className="settings-header">
-        <span className="settings-title">🎨 Colour Palette</span>
-        <div className="settings-header-actions">
-          <button className="pill-btn ghost" onClick={onResetAll}>Reset all</button>
-          <button className="pill-btn ghost" onClick={onClose}>✕</button>
+    <>
+      {/* Backdrop — clicking outside closes */}
+      <div className="palette-backdrop" onClick={onClose} />
+
+      <aside className="palette-panel">
+        <div className="palette-top">
+          <span className="palette-title">Palette</span>
+          <button className="palette-close" onClick={onClose}>✕</button>
         </div>
-      </div>
 
-      <div className="phase-tabs">
-        {PHASE_KEYS.map(key => (
-          <button
-            key={key}
-            className={`phase-tab ${activePhase === key ? 'active' : ''}`}
-            onClick={() => setActivePhase(key)}
-          >
-            {PHASE_LABELS[key]}
-          </button>
-        ))}
-      </div>
+        {/* Phase tabs */}
+        <div className="palette-tabs">
+          {PHASE_KEYS.map(key => (
+            <button
+              key={key}
+              className={`palette-tab ${activePhase === key ? 'active' : ''}`}
+              style={activePhase === key ? {
+                background: colors[key].accent,
+                borderColor: colors[key].accent,
+                color: '#fff',
+              } : {
+                borderColor: colors[key].accent + '80',
+              }}
+              onClick={() => setActivePhase(key)}
+            >
+              {PHASE_LABELS[key]}
+            </button>
+          ))}
+        </div>
 
-      <div className="palette-editor">
         {/* Pickers */}
-        <div className="picker-row">
-          <ColorPicker
+        <div className="palette-pickers">
+          <Swatch
             label="Background"
             value={scheme.base}
             onChange={v => onSetPhaseColor(activePhase, 'base', v)}
             onReset={() => onSetPhaseColor(activePhase, 'base', DEFAULTS[activePhase].base)}
           />
-          <ColorPicker
+          <Swatch
             label="Accent"
             value={scheme.accent}
             onChange={v => onSetPhaseColor(activePhase, 'accent', v)}
@@ -47,36 +52,30 @@ export default function ColorSettings({ colors, onSetPhaseColor, onResetAll, onC
           />
         </div>
 
-        {/* Live preview */}
-        <div className="palette-preview" style={{ background: scheme.base }}>
-          <div className="preview-blobs">
-            {previewBlobs.map((c, i) => (
-              <span key={i} className="preview-blob" style={{ background: c }} />
-            ))}
-          </div>
-          <span className="preview-accent-label" style={{ color: previewAccent }}>
-            FOCUS
-          </span>
-          <span className="preview-timer" style={{ color: '#f5eeee' }}>
-            25:00
-          </span>
-        </div>
-      </div>
-    </div>
+        <button className="palette-reset" onClick={onResetAll}>
+          Reset all to defaults
+        </button>
+      </aside>
+    </>
   );
 }
 
-function ColorPicker({ label, value, onChange, onReset }) {
+function Swatch({ label, value, onChange, onReset }) {
   return (
-    <div className="swatch-row">
-      <span className="swatch-label">{label}</span>
-      <div className="swatch-controls">
-        <div className="swatch-preview" style={{ background: value }}>
-          <input type="color" value={value} onChange={e => onChange(e.target.value)} className="color-input" />
-        </div>
-        <span className="swatch-hex">{value}</span>
-        <button className="swatch-reset" onClick={onReset} title="Reset">↺</button>
+    <div className="swatch">
+      <div className="swatch-top">
+        <span className="swatch-label">{label}</span>
+        <button className="swatch-reset-btn" onClick={onReset}>↺ Reset</button>
       </div>
+      <label className="swatch-body" style={{ background: value }}>
+        <input
+          type="color"
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          className="color-input"
+        />
+        <span className="swatch-hex">{value}</span>
+      </label>
     </div>
   );
 }

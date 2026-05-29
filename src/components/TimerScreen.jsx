@@ -5,17 +5,11 @@ import Background from './Background.jsx';
 import ColorSettings from './ColorSettings.jsx';
 import { deriveVars } from '../utils/colorUtils.js';
 
-const DEVICE_ICON  = { web: '🖥️', android: '📱' };
-const THEME_OPTIONS = [
-  { value: 'dark',   label: '🌙 Dark'   },
-  { value: 'light',  label: '☀️ Light'  },
-  { value: 'system', label: '💻 System' },
-];
+const DEVICE_ICON = { web: '🖥️', android: '📱' };
 const WEB_URL = 'https://yap-web-flame.vercel.app';
 
 export default function TimerScreen({
   state, peers, devices, syncStatus, sessionId,
-  theme, onThemeChange,
   colors, onSetPhaseColor, onResetColors,
   onStart, onPause, onReset, onSkip,
 }) {
@@ -31,7 +25,6 @@ export default function TimerScreen({
   const cssVars   = deriveVars(scheme.base, scheme.accent);
 
   const [showSync,   setShowSync]   = useState(false);
-  const [showTheme,  setShowTheme]  = useState(false);
   const [showColors, setShowColors] = useState(false);
   const [qrDataUrl,  setQrDataUrl]  = useState('');
 
@@ -45,7 +38,7 @@ export default function TimerScreen({
     }).then(setQrDataUrl);
   }, [syncUrl]);
 
-  const closeAll = () => { setShowSync(false); setShowTheme(false); setShowColors(false); };
+  const closeAll = () => { setShowSync(false); setShowColors(false); };
 
   return (
     <div
@@ -78,29 +71,6 @@ export default function TimerScreen({
           >
             🎨
           </button>
-
-          {/* Theme */}
-          <div className="dropdown-wrap">
-            <button
-              className="pill-btn ghost"
-              onClick={() => { closeAll(); setShowTheme(v => !v); }}
-            >
-              {THEME_OPTIONS.find(t => t.value === theme)?.label ?? '🌙'}
-            </button>
-            {showTheme && (
-              <div className="dropdown">
-                {THEME_OPTIONS.map(opt => (
-                  <button
-                    key={opt.value}
-                    className={`dropdown-item ${theme === opt.value ? 'active' : ''}`}
-                    onClick={() => { onThemeChange(opt.value); setShowTheme(false); }}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
 
           {/* Sync */}
           <button

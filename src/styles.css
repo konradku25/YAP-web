@@ -1,11 +1,11 @@
-/* ── Reset & base ──────────────────────────────────── */
+﻿/* â”€â”€ Reset & base â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 16px;
 
-  /* Work — warm red */
+  /* Work â€” warm red */
   --c-blob-a:   #c0363e;
   --c-blob-b:   #e07060;
   --c-blob-c:   #9b2a55;
@@ -54,7 +54,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Screen wrapper ────────────────────────────────── */
+/* â”€â”€ Screen wrapper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .screen {
   min-height: 100dvh;
   display: flex;
@@ -87,7 +87,7 @@ body {
   --c-btn:     rgba(42,96,128,.9);
 }
 
-/* ── Lava lamp background ──────────────────────────── */
+/* â”€â”€ Lava lamp background â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .bg-canvas {
   position: fixed;
   inset: 0;
@@ -137,7 +137,7 @@ body {
   animation: lava5 12s ease-in-out infinite;
 }
 
-/* Break blobs — same layout, colours inherit via CSS vars */
+/* Break blobs â€” same layout, colours inherit via CSS vars */
 .bg-break .blob-1 {
   width: 520px; height: 520px;
   top: -10%; left: -8%;
@@ -204,7 +204,7 @@ body {
   80%      { transform: translate(-30px,20px) scale(.8);  border-radius: 45% 55%; }
 }
 
-/* ── Glassmorphism helpers ─────────────────────────── */
+/* â”€â”€ Glassmorphism helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .glass-bar,
 .glass-panel {
   backdrop-filter: blur(20px) saturate(160%);
@@ -213,7 +213,7 @@ body {
   border-bottom: 1px solid var(--c-border);
 }
 
-/* ── Header ────────────────────────────────────────── */
+/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .glass-bar {
   position: relative;
   z-index: 10;
@@ -244,7 +244,7 @@ body {
   flex-shrink: 0;
 }
 
-/* ── Device chips ──────────────────────────────────── */
+/* â”€â”€ Device chips â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .device-chips {
   display: flex;
   gap: 6px;
@@ -262,7 +262,7 @@ body {
   text-transform: capitalize;
 }
 
-/* ── Pill buttons ──────────────────────────────────── */
+/* â”€â”€ Pill buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .pill-btn {
   border: none;
   border-radius: 999px;
@@ -284,7 +284,7 @@ body {
 .pill-btn.ghost:hover { color: var(--c-fg); background: rgba(255,255,255,.1); }
 .pill-btn.ghost.accent { color: var(--c-accent); }
 
-/* ── Dropdown ──────────────────────────────────────── */
+/* â”€â”€ Dropdown â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .dropdown-wrap { position: relative; }
 
 .dropdown {
@@ -318,7 +318,7 @@ body {
 .dropdown-item:hover { background: var(--c-surface); }
 .dropdown-item.active { color: var(--c-accent); font-weight: 700; }
 
-/* ── Sync drawer ───────────────────────────────────── */
+/* â”€â”€ Sync drawer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sync-drawer {
   position: relative;
   z-index: 9;
@@ -368,7 +368,7 @@ body {
 .sync-devices { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
 .sync-waiting { font-size: .85rem; color: var(--c-muted); font-style: italic; }
 
-/* ── Timer ─────────────────────────────────────────── */
+/* â”€â”€ Timer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .timer-main {
   position: relative;
   z-index: 2;
@@ -433,7 +433,7 @@ body {
   transform: scale(1.3);
 }
 
-/* ── Glass control bar ─────────────────────────────── */
+/* â”€â”€ Glass control bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .controls-glass {
   display: flex;
   align-items: center;
@@ -485,165 +485,167 @@ body {
 
 .play-icon { font-size: 1.2rem; }
 
-/* ── Colour settings panel ─────────────────────────── */
-.settings-panel {
-  position: relative;
-  z-index: 9;
-  padding: 20px 24px 24px;
-  border-bottom: 1px solid var(--c-border);
-  animation: slideDown .22s ease;
+/* ── Palette slide-in panel ────────────────────────── */
+.palette-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 19;
 }
 
-.settings-header {
+.palette-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(300px, 90vw);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(32px) saturate(160%);
+  -webkit-backdrop-filter: blur(32px) saturate(160%);
+  background: var(--c-surface);
+  border-left: 1px solid var(--c-border);
+  padding: 24px 20px 32px;
+  animation: slideInRight .28s cubic-bezier(.22,1,.36,1);
+  overflow-y: auto;
+  gap: 20px;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+.palette-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
 }
 
-.settings-title {
-  font-size: 1rem;
-  font-weight: 700;
+.palette-title {
+  font-size: .9rem;
+  font-weight: 800;
   color: var(--c-fg);
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
-.settings-header-actions { display: flex; gap: 8px; }
-
-/* Phase tabs */
-.phase-tabs {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.phase-tab {
+.palette-close {
   background: var(--c-surface);
   border: 1px solid var(--c-border);
-  border-radius: 999px;
+  border-radius: 50%;
   color: var(--c-muted);
   cursor: pointer;
-  font-family: inherit;
-  font-size: .82rem;
-  font-weight: 600;
-  padding: 6px 16px;
-  transition: background .15s, color .15s, border-color .15s;
+  font-size: .85rem;
+  height: 30px;
+  width: 30px;
+  transition: color .15s;
 }
-.phase-tab:hover { color: var(--c-fg); }
-.phase-tab.active {
-  background: var(--c-btn);
-  border-color: transparent;
-  color: #fff;
-}
+.palette-close:hover { color: var(--c-fg); }
 
-/* Colour grid */
-.palette-editor { display: flex; flex-direction: column; gap: 16px; }
-
-.picker-row {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-
-/* Live preview strip */
-.palette-preview {
-  border-radius: 14px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 0 20px;
-  overflow: hidden;
-  position: relative;
-  border: 1px solid rgba(255,255,255,.1);
-}
-
-.preview-blobs {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-}
-
-.preview-blob {
-  flex: 1;
-  height: 120px;
-  filter: blur(20px);
-  opacity: .6;
-  border-radius: 50%;
-}
-
-.preview-accent-label {
-  position: relative;
-  font-size: .65rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-}
-
-.preview-timer {
-  position: relative;
-  font-size: 1.8rem;
-  font-weight: 900;
-  letter-spacing: -2px;
-  font-variant-numeric: tabular-nums;
-}
-
-.swatch-row {
+/* Phase tabs — stacked list */
+.palette-tabs {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.swatch-label {
-  font-size: .72rem;
+.palette-tab {
+  background: transparent;
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  color: var(--c-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: .85rem;
   font-weight: 600;
-  letter-spacing: 1px;
+  padding: 10px 14px;
+  text-align: left;
+  transition: color .15s, border-color .2s, background .15s;
+}
+.palette-tab:hover { color: var(--c-fg); }
+
+/* Colour swatches */
+.palette-pickers {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.swatch { display: flex; flex-direction: column; gap: 6px; }
+
+.swatch-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.swatch-label {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--c-muted);
 }
 
-.swatch-controls {
+.swatch-reset-btn {
+  background: none;
+  border: none;
+  color: var(--c-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: .72rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: color .15s;
+}
+.swatch-reset-btn:hover { color: var(--c-fg); }
+
+.swatch-body {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.swatch-preview {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  justify-content: center;
+  height: 52px;
+  border-radius: 12px;
   border: 1px solid var(--c-border);
-  overflow: hidden;
-  flex-shrink: 0;
-  position: relative;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform .1s, box-shadow .15s;
 }
+.swatch-body:hover { transform: scale(1.02); box-shadow: 0 4px 16px rgba(0,0,0,.3); }
 
 .color-input {
   position: absolute;
-  inset: -4px;
-  width: calc(100% + 8px);
-  height: calc(100% + 8px);
+  inset: -8px;
+  width: calc(100% + 16px);
+  height: calc(100% + 16px);
   opacity: 0;
   cursor: pointer;
 }
 
 .swatch-hex {
-  font-size: .8rem;
   font-family: monospace;
-  color: var(--c-muted);
-  flex: 1;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  pointer-events: none;
+  position: relative;
+  mix-blend-mode: difference;
+  color: white;
 }
 
-.swatch-reset {
+.palette-reset {
   background: none;
-  border: none;
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
   color: var(--c-muted);
   cursor: pointer;
-  font-size: 1rem;
-  padding: 4px;
-  border-radius: 6px;
-  transition: color .15s, background .15s;
+  font-family: inherit;
+  font-size: .8rem;
+  padding: 10px;
+  width: 100%;
+  transition: color .15s, border-color .15s;
+  margin-top: auto;
 }
-.swatch-reset:hover { color: var(--c-fg); background: var(--c-surface); }
+.palette-reset:hover { color: var(--c-fg); border-color: var(--c-fg); }

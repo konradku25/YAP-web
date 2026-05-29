@@ -12,17 +12,7 @@ function generateSessionId() {
 const SESSION_ID = generateSessionId();
 
 export default function App() {
-  const [theme, setTheme] = useState(() => localStorage.getItem('yap-theme') ?? 'dark');
   const { colors, setPhaseColor, resetAll } = usePhaseColors();
-
-  useEffect(() => {
-    localStorage.setItem('yap-theme', theme);
-    if (theme === 'system') {
-      document.documentElement.removeAttribute('data-theme');
-    } else {
-      document.documentElement.setAttribute('data-theme', theme);
-    }
-  }, [theme]);
 
   const applyRemoteRef = useRef(null);
   const { status, peers, devices, sendState } = useSync(SESSION_ID, (s) => applyRemoteRef.current?.(s));
@@ -36,8 +26,6 @@ export default function App() {
       devices={devices}
       syncStatus={status}
       sessionId={SESSION_ID}
-      theme={theme}
-      onThemeChange={setTheme}
       colors={colors}
       onSetPhaseColor={setPhaseColor}
       onResetColors={resetAll}

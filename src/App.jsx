@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import ConnectScreen from './components/ConnectScreen.jsx';
 import TimerScreen from './components/TimerScreen.jsx';
 import { useTimer } from './hooks/useTimer.js';
@@ -11,8 +11,11 @@ export default function App() {
     return params.get('s')?.toUpperCase() ?? null;
   });
 
-  const { status, peers, sendState } = useSync(sessionId, applyRemote);
+  // Ref breaks the circular dependency between useSync and useTimer
+  const applyRemoteRef = useRef(null);
+  const { status, peers, sendState } = useSync(sessionId, (s) => applyRemoteRef.current?.(s));
   const { state, start, pause, reset, skip, applyRemote } = useTimer(sendState);
+  applyRemoteRef.current = applyRemote;
 
   // Auto-update URL when session changes so page is shareable
   useEffect(() => {

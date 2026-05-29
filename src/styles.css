@@ -576,6 +576,41 @@ body {
 }
 .palette-close:hover { color: var(--c-fg); }
 
+/* Top-level Style / Colours tabs */
+.palette-main-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.palette-main-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--c-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: .85rem;
+  font-weight: 600;
+  padding: 8px;
+  transition: background .15s, color .15s;
+}
+.palette-main-tab:hover { color: var(--c-fg); }
+.palette-main-tab.active {
+  background: var(--c-btn);
+  color: var(--c-btn-fg);
+}
+
+.palette-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 /* Phase tabs — stacked list */
 .palette-tabs {
   display: flex;

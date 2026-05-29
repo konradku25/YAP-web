@@ -252,14 +252,42 @@ body {
   justify-content: center;
 }
 
+/* ── Status indicator dot ──────────────────────────── */
+.status-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--c-muted);
+  flex-shrink: 0;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.status-dot.status-connected    { background: #4caf50; }
+.status-dot.status-connecting   { background: #ff9800; animation: pulse .9s ease-in-out infinite; }
+.status-dot.status-disconnected { background: var(--c-muted); }
+
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: .4; }
+}
+
 .device-chip {
   background: var(--c-surface);
   border: 1px solid var(--c-border);
   border-radius: 999px;
   font-size: .78rem;
-  padding: 3px 10px;
+  padding: 3px 10px 3px 8px;
   color: var(--c-fg);
-  text-transform: capitalize;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.chip-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #4caf50;
+  flex-shrink: 0;
 }
 
 /* â”€â”€ Pill buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -271,6 +299,9 @@ body {
   font-size: .85rem;
   font-weight: 600;
   padding: 7px 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   transition: background .2s, color .2s, transform .1s;
   white-space: nowrap;
 }

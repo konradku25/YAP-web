@@ -5,7 +5,7 @@ import Background from './Background.jsx';
 import ColorSettings from './ColorSettings.jsx';
 import { deriveVars } from '../utils/colorUtils.js';
 
-const DEVICE_ICON = { web: '🖥️', android: '📱' };
+const DEVICE_LABEL = { web: 'Web', android: 'Android' };
 const WEB_URL = 'https://yap-web-flame.vercel.app';
 
 export default function TimerScreen({
@@ -19,7 +19,6 @@ export default function TimerScreen({
   const isWork = phase === 'WORK';
   const phaseLabel = PHASES[phase].label.toUpperCase();
 
-  // Active colour scheme — paused state overrides phase colours
   const schemeKey = !isRunning ? 'PAUSED' : phase;
   const scheme    = colors[schemeKey];
   const cssVars   = deriveVars(scheme.base, scheme.accent);
@@ -41,10 +40,7 @@ export default function TimerScreen({
   const closeAll = () => { setShowSync(false); setShowColors(false); };
 
   return (
-    <div
-      className={`screen ${isWork ? 'phase-work' : 'phase-break'}`}
-      style={cssVars}
-    >
+    <div className={`screen ${isWork ? 'phase-work' : 'phase-break'}`} style={cssVars}>
       <Background isWork={isWork} />
 
       {/* ── Header ── */}
@@ -56,7 +52,8 @@ export default function TimerScreen({
             <div className="device-chips">
               {devices.map((d, i) => (
                 <span key={i} className="device-chip">
-                  {DEVICE_ICON[d] ?? '❓'} {d}
+                  <span className="chip-dot" />
+                  {DEVICE_LABEL[d] ?? d}
                 </span>
               ))}
             </div>
@@ -64,20 +61,19 @@ export default function TimerScreen({
         </div>
 
         <div className="header-actions">
-          {/* Palette */}
           <button
             className={`pill-btn ghost ${showColors ? 'accent' : ''}`}
             onClick={() => { closeAll(); setShowColors(v => !v); }}
           >
-            🎨
+            Theme
           </button>
 
-          {/* Sync */}
           <button
             className={`pill-btn ghost ${syncConnected ? 'accent' : ''}`}
             onClick={() => { closeAll(); setShowSync(v => !v); }}
           >
-            {syncConnected ? `🟢 ${peers} synced` : '⚡ Sync'}
+            <span className={`status-dot status-${syncStatus}`} />
+            {syncConnected ? `${peers} synced` : 'Sync'}
           </button>
         </div>
       </header>
@@ -96,7 +92,7 @@ export default function TimerScreen({
       {showSync && (
         <div className="sync-drawer glass-panel">
           <p className="sync-hint">
-            Open <strong>YAP</strong> on your phone → tap <strong>Sync</strong> → enter the code.
+            Open <strong>YAP</strong> on your phone, tap <strong>Sync</strong>, and enter the code below.
           </p>
           <div className="sync-body">
             {qrDataUrl && <img src={qrDataUrl} alt="QR" className="qr-img" />}
@@ -106,7 +102,10 @@ export default function TimerScreen({
               <div className="sync-devices">
                 {syncConnected
                   ? devices.map((d, i) => (
-                      <span key={i} className="device-chip">{DEVICE_ICON[d] ?? '❓'} {d}</span>
+                      <span key={i} className="device-chip">
+                        <span className="chip-dot" />
+                        {DEVICE_LABEL[d] ?? d}
+                      </span>
                     ))
                   : <span className="sync-waiting">Waiting for device…</span>}
               </div>

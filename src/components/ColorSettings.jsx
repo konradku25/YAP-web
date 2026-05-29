@@ -12,7 +12,7 @@ export default function ColorSettings({ colors, onSetPhaseColor, onResetAll, onC
 
       <aside className="palette-panel">
         <div className="palette-top">
-          <span className="palette-title">Palette</span>
+          <span className="palette-title">Colour Palette</span>
           <button className="palette-close" onClick={onClose}>✕</button>
         </div>
 

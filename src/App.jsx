@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import StartScreen from './components/StartScreen.jsx';
 import TimerScreen from './components/TimerScreen.jsx';
 import { useTimer } from './hooks/useTimer.js';
 import { useSync } from './hooks/useSync.js';
@@ -12,6 +13,7 @@ function generateSessionId() {
 const SESSION_ID = generateSessionId();
 
 export default function App() {
+  const [started, setStarted] = useState(false);
   const { colors, setPhaseColor, setBackgroundStyle, resetAll, applyRemoteColors } = usePhaseColors();
 
   const applyRemoteRef = useRef(null);
@@ -27,6 +29,18 @@ export default function App() {
   useEffect(() => {
     if (status === 'connected') sendTheme(colors);
   }, [status]); // eslint-disable-line
+
+  if (!started) {
+    return (
+      <StartScreen
+        sessionId={SESSION_ID}
+        syncStatus={status}
+        peers={peers}
+        colors={colors}
+        onStart={() => setStarted(true)}
+      />
+    );
+  }
 
   return (
     <TimerScreen

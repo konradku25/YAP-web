@@ -108,6 +108,152 @@ body {
 
 /* Gradient style bg is driven by JS (see Background.jsx), no CSS needed */
 
+/* ── Start screen ──────────────────────────────────── */
+.start-screen {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.start-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.start-main {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px 24px;
+}
+
+.start-brand { text-align: center; }
+
+.start-logo {
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: var(--c-accent);
+  margin: 0;
+}
+
+.start-tagline {
+  font-size: .9rem;
+  color: var(--c-muted);
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+/* Glassmorphism card */
+.start-card {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  background: var(--c-surface);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--c-border);
+  border-radius: 20px;
+  padding: 28px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.start-qr-wrap {
+  flex-shrink: 0;
+}
+
+.start-qr {
+  width: 140px;
+  height: 140px;
+  border-radius: 10px;
+  display: block;
+}
+
+.start-qr-placeholder {
+  width: 140px;
+  height: 140px;
+  border-radius: 10px;
+  background: var(--c-surface);
+}
+
+.start-info {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.start-hint {
+  font-size: .88rem;
+  color: var(--c-muted);
+  line-height: 1.55;
+}
+.start-hint strong { color: var(--c-fg); }
+
+.start-code-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.start-code-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.start-code {
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: 6px;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-accent);
+}
+
+.start-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.start-status-text {
+  font-size: .82rem;
+  color: var(--c-muted);
+}
+
+/* "Use without sync" ghost button */
+.start-solo-btn {
+  background: transparent;
+  border: 1px solid var(--c-border);
+  border-radius: 999px;
+  color: var(--c-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: .88rem;
+  font-weight: 500;
+  padding: 10px 28px;
+  transition: color .2s, border-color .2s;
+}
+.start-solo-btn:hover {
+  color: var(--c-fg);
+  border-color: var(--c-fg);
+}
+
 .bg-work .blob-1 {
   width: 520px; height: 520px;
   top: -10%; left: -8%;

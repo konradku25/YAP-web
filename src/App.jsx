@@ -13,7 +13,7 @@ const SESSION_ID = generateSessionId();
 
 export default function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('yap-theme') ?? 'dark');
-  const { colors, setColor, setBlob, resetAll } = usePhaseColors();
+  const { colors, setPhaseColor, resetAll } = usePhaseColors();
 
   useEffect(() => {
     localStorage.setItem('yap-theme', theme);
@@ -39,8 +39,7 @@ export default function App() {
       theme={theme}
       onThemeChange={setTheme}
       colors={colors}
-      onSetColor={setColor}
-      onSetBlob={setBlob}
+      onSetPhaseColor={setPhaseColor}
       onResetColors={resetAll}
       onStart={start}
       onPause={pause}

@@ -3,6 +3,7 @@ import QRCode from 'qrcode';
 import { PHASES } from '../hooks/useTimer.js';
 import Background from './Background.jsx';
 import ColorSettings from './ColorSettings.jsx';
+import { deriveVars } from '../utils/colorUtils.js';
 
 const DEVICE_ICON  = { web: '🖥️', android: '📱' };
 const THEME_OPTIONS = [
@@ -15,7 +16,7 @@ const WEB_URL = 'https://yap-web-flame.vercel.app';
 export default function TimerScreen({
   state, peers, devices, syncStatus, sessionId,
   theme, onThemeChange,
-  colors, onSetColor, onSetBlob, onResetColors,
+  colors, onSetPhaseColor, onResetColors,
   onStart, onPause, onReset, onSkip,
 }) {
   const { phase, remainingSeconds, isRunning, sessionInCycle } = state;
@@ -27,16 +28,7 @@ export default function TimerScreen({
   // Active colour scheme — paused state overrides phase colours
   const schemeKey = !isRunning ? 'PAUSED' : phase;
   const scheme    = colors[schemeKey];
-
-  // CSS vars injected onto the root element so Background (fixed) also picks them up
-  const cssVars = {
-    '--c-base':   scheme.base,
-    '--c-blob-a': scheme.blobs[0],
-    '--c-blob-b': scheme.blobs[1],
-    '--c-blob-c': scheme.blobs[2],
-    '--c-blob-d': scheme.blobs[3],
-    '--c-blob-e': scheme.blobs[4],
-  };
+  const cssVars   = deriveVars(scheme.base, scheme.accent);
 
   const [showSync,   setShowSync]   = useState(false);
   const [showTheme,  setShowTheme]  = useState(false);
@@ -124,8 +116,7 @@ export default function TimerScreen({
       {showColors && (
         <ColorSettings
           colors={colors}
-          onSetColor={onSetColor}
-          onSetBlob={onSetBlob}
+          onSetPhaseColor={onSetPhaseColor}
           onResetAll={onResetColors}
           onClose={() => setShowColors(false)}
         />

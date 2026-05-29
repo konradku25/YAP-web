@@ -537,10 +537,56 @@ body {
 }
 
 /* Colour grid */
-.color-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
+.palette-editor { display: flex; flex-direction: column; gap: 16px; }
+
+.picker-row {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+/* Live preview strip */
+.palette-preview {
+  border-radius: 14px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 0 20px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255,255,255,.1);
+}
+
+.preview-blobs {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+}
+
+.preview-blob {
+  flex: 1;
+  height: 120px;
+  filter: blur(20px);
+  opacity: .6;
+  border-radius: 50%;
+}
+
+.preview-accent-label {
+  position: relative;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.preview-timer {
+  position: relative;
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: -2px;
+  font-variant-numeric: tabular-nums;
 }
 
 .swatch-row {

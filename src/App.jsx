@@ -1,50 +1,44 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import ConnectScreen from './components/ConnectScreen.jsx';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import TimerScreen from './components/TimerScreen.jsx';
 import { useTimer } from './hooks/useTimer.js';
 import { useSync } from './hooks/useSync.js';
 
-export default function App() {
-  // Read ?s=CODE from URL on load
-  const [sessionId, setSessionId] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('s')?.toUpperCase() ?? null;
-  });
+function generateSessionId() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
 
-  // Ref breaks the circular dependency between useSync and useTimer
+// Persist session ID for the browser tab lifetime
+const SESSION_ID = generateSessionId();
+
+export default function App() {
+  const [theme, setTheme] = useState(() => localStorage.getItem('yap-theme') ?? 'dark');
+
+  useEffect(() => {
+    localStorage.setItem('yap-theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'system') {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, [theme]);
+
   const applyRemoteRef = useRef(null);
-  const { status, peers, sendState } = useSync(sessionId, (s) => applyRemoteRef.current?.(s));
+  const { status, peers, sendState } = useSync(SESSION_ID, (s) => applyRemoteRef.current?.(s));
   const { state, start, pause, reset, skip, applyRemote } = useTimer(sendState);
   applyRemoteRef.current = applyRemote;
-
-  // Auto-update URL when session changes so page is shareable
-  useEffect(() => {
-    if (sessionId) {
-      window.history.replaceState({}, '', `?s=${sessionId}`);
-    } else {
-      window.history.replaceState({}, '', '/');
-    }
-  }, [sessionId]);
-
-  const disconnect = useCallback(() => {
-    setSessionId(null);
-  }, []);
-
-  if (!sessionId) {
-    return <ConnectScreen onConnect={setSessionId} />;
-  }
 
   return (
     <TimerScreen
       state={state}
       peers={peers}
       syncStatus={status}
-      sessionId={sessionId}
+      sessionId={SESSION_ID}
+      theme={theme}
+      onThemeChange={setTheme}
       onStart={start}
       onPause={pause}
       onReset={reset}
       onSkip={skip}
-      onDisconnect={disconnect}
     />
   );
 }

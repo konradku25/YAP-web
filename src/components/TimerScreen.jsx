@@ -1,20 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import { PHASES } from '../hooks/useTimer.js';
 import Background from './Background.jsx';
+import ColorSettings from './ColorSettings.jsx';
 
-const DEVICE_ICON = { web: '🖥️', android: '📱' };
+const DEVICE_ICON  = { web: '🖥️', android: '📱' };
 const THEME_OPTIONS = [
   { value: 'dark',   label: '🌙 Dark'   },
   { value: 'light',  label: '☀️ Light'  },
   { value: 'system', label: '💻 System' },
 ];
-
 const WEB_URL = 'https://yap-web-flame.vercel.app';
 
 export default function TimerScreen({
   state, peers, devices, syncStatus, sessionId,
   theme, onThemeChange,
+  colors, onSetColor, onSetBlob, onResetColors,
   onStart, onPause, onReset, onSkip,
 }) {
   const { phase, remainingSeconds, isRunning, sessionInCycle } = state;
@@ -23,11 +24,27 @@ export default function TimerScreen({
   const isWork = phase === 'WORK';
   const phaseLabel = PHASES[phase].label.toUpperCase();
 
-  const [showSync, setShowSync]   = useState(false);
-  const [showTheme, setShowTheme] = useState(false);
-  const [qrDataUrl, setQrDataUrl] = useState('');
+  // Active colour scheme — paused state overrides phase colours
+  const schemeKey = !isRunning ? 'PAUSED' : phase;
+  const scheme    = colors[schemeKey];
+
+  // CSS vars injected onto the root element so Background (fixed) also picks them up
+  const cssVars = {
+    '--c-base':   scheme.base,
+    '--c-blob-a': scheme.blobs[0],
+    '--c-blob-b': scheme.blobs[1],
+    '--c-blob-c': scheme.blobs[2],
+    '--c-blob-d': scheme.blobs[3],
+    '--c-blob-e': scheme.blobs[4],
+  };
+
+  const [showSync,   setShowSync]   = useState(false);
+  const [showTheme,  setShowTheme]  = useState(false);
+  const [showColors, setShowColors] = useState(false);
+  const [qrDataUrl,  setQrDataUrl]  = useState('');
 
   const syncUrl = `${WEB_URL}/?s=${sessionId}`;
+  const syncConnected = syncStatus === 'connected' && peers > 0;
 
   useEffect(() => {
     QRCode.toDataURL(syncUrl, {
@@ -36,10 +53,13 @@ export default function TimerScreen({
     }).then(setQrDataUrl);
   }, [syncUrl]);
 
-  const syncConnected = syncStatus === 'connected' && peers > 0;
+  const closeAll = () => { setShowSync(false); setShowTheme(false); setShowColors(false); };
 
   return (
-    <div className={`screen ${isWork ? 'phase-work' : 'phase-break'}`}>
+    <div
+      className={`screen ${isWork ? 'phase-work' : 'phase-break'}`}
+      style={cssVars}
+    >
       <Background isWork={isWork} />
 
       {/* ── Header ── */}
@@ -59,9 +79,20 @@ export default function TimerScreen({
         </div>
 
         <div className="header-actions">
+          {/* Palette */}
+          <button
+            className={`pill-btn ghost ${showColors ? 'accent' : ''}`}
+            onClick={() => { closeAll(); setShowColors(v => !v); }}
+          >
+            🎨
+          </button>
+
           {/* Theme */}
           <div className="dropdown-wrap">
-            <button className="pill-btn ghost" onClick={() => { setShowTheme(v => !v); setShowSync(false); }}>
+            <button
+              className="pill-btn ghost"
+              onClick={() => { closeAll(); setShowTheme(v => !v); }}
+            >
               {THEME_OPTIONS.find(t => t.value === theme)?.label ?? '🌙'}
             </button>
             {showTheme && (
@@ -82,12 +113,23 @@ export default function TimerScreen({
           {/* Sync */}
           <button
             className={`pill-btn ghost ${syncConnected ? 'accent' : ''}`}
-            onClick={() => { setShowSync(v => !v); setShowTheme(false); }}
+            onClick={() => { closeAll(); setShowSync(v => !v); }}
           >
             {syncConnected ? `🟢 ${peers} synced` : '⚡ Sync'}
           </button>
         </div>
       </header>
+
+      {/* ── Colour settings ── */}
+      {showColors && (
+        <ColorSettings
+          colors={colors}
+          onSetColor={onSetColor}
+          onSetBlob={onSetBlob}
+          onResetAll={onResetColors}
+          onClose={() => setShowColors(false)}
+        />
+      )}
 
       {/* ── Sync drawer ── */}
       {showSync && (
@@ -102,7 +144,9 @@ export default function TimerScreen({
               <p className="sync-code">{sessionId}</p>
               <div className="sync-devices">
                 {syncConnected
-                  ? devices.map((d, i) => <span key={i} className="device-chip">{DEVICE_ICON[d] ?? '❓'} {d}</span>)
+                  ? devices.map((d, i) => (
+                      <span key={i} className="device-chip">{DEVICE_ICON[d] ?? '❓'} {d}</span>
+                    ))
                   : <span className="sync-waiting">Waiting for device…</span>}
               </div>
             </div>
@@ -112,7 +156,7 @@ export default function TimerScreen({
 
       {/* ── Timer ── */}
       <main className="timer-main">
-        <p className="phase-label">{phaseLabel}</p>
+        <p className="phase-label">{isRunning ? phaseLabel : 'PAUSED'}</p>
 
         <div className="timer-display">
           <span className="timer-digits">{mins}</span>
@@ -127,7 +171,6 @@ export default function TimerScreen({
           })}
         </div>
 
-        {/* Glass control bar */}
         <div className="controls-glass">
           <button className="icon-btn" onClick={onReset} title="Reset">↺</button>
           <button className="play-btn" onClick={isRunning ? onPause : onStart}>

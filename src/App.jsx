@@ -1,24 +1,26 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import TimerScreen from './components/TimerScreen.jsx';
 import { useTimer } from './hooks/useTimer.js';
 import { useSync } from './hooks/useSync.js';
+import { usePhaseColors } from './hooks/usePhaseColors.js';
 
 function generateSessionId() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   return Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
 }
 
-// Persist session ID for the browser tab lifetime
 const SESSION_ID = generateSessionId();
 
 export default function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('yap-theme') ?? 'dark');
+  const { colors, setColor, setBlob, resetAll } = usePhaseColors();
 
   useEffect(() => {
     localStorage.setItem('yap-theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
     if (theme === 'system') {
       document.documentElement.removeAttribute('data-theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', theme);
     }
   }, [theme]);
 
@@ -36,6 +38,10 @@ export default function App() {
       sessionId={SESSION_ID}
       theme={theme}
       onThemeChange={setTheme}
+      colors={colors}
+      onSetColor={setColor}
+      onSetBlob={setBlob}
+      onResetColors={resetAll}
       onStart={start}
       onPause={pause}
       onReset={reset}

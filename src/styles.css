@@ -484,3 +484,120 @@ body {
 .play-btn:active { transform: scale(.95); }
 
 .play-icon { font-size: 1.2rem; }
+
+/* ── Colour settings panel ─────────────────────────── */
+.settings-panel {
+  position: relative;
+  z-index: 9;
+  padding: 20px 24px 24px;
+  border-bottom: 1px solid var(--c-border);
+  animation: slideDown .22s ease;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.settings-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--c-fg);
+}
+
+.settings-header-actions { display: flex; gap: 8px; }
+
+/* Phase tabs */
+.phase-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.phase-tab {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 999px;
+  color: var(--c-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: .82rem;
+  font-weight: 600;
+  padding: 6px 16px;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.phase-tab:hover { color: var(--c-fg); }
+.phase-tab.active {
+  background: var(--c-btn);
+  border-color: transparent;
+  color: #fff;
+}
+
+/* Colour grid */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.swatch-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.swatch-label {
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.swatch-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.swatch-preview {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--c-border);
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.color-input {
+  position: absolute;
+  inset: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  opacity: 0;
+  cursor: pointer;
+}
+
+.swatch-hex {
+  font-size: .8rem;
+  font-family: monospace;
+  color: var(--c-muted);
+  flex: 1;
+}
+
+.swatch-reset {
+  background: none;
+  border: none;
+  color: var(--c-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color .15s, background .15s;
+}
+.swatch-reset:hover { color: var(--c-fg); background: var(--c-surface); }

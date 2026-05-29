@@ -3,7 +3,6 @@ import { PHASE_KEYS, PHASE_LABELS, DEFAULTS } from '../hooks/usePhaseColors.js';
 
 const STYLES = [
   { value: 'lava',     label: 'Lava Lamp' },
-  { value: 'aurora',   label: 'Aurora'    },
   { value: 'gradient', label: 'Gradient'  },
 ];
 

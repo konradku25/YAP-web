@@ -106,67 +106,7 @@ body {
   transition: background 1.2s ease;
 }
 
-/* ── Aurora background ─────────────────────────────── */
-.aurora-band {
-  position: absolute;
-  width: 130%;
-  left: -15%;
-  border-radius: 50%;
-  filter: blur(40px);
-  opacity: 0;
-  animation-fill-mode: both;
-}
-.aurora-1 {
-  height: 40%;
-  top: 10%;
-  background: var(--c-blob-a);
-  opacity: .55;
-  animation: aurora1 10s ease-in-out infinite;
-}
-.aurora-2 {
-  height: 35%;
-  top: 40%;
-  background: var(--c-blob-b);
-  opacity: .45;
-  animation: aurora2 7s ease-in-out infinite;
-}
-.aurora-3 {
-  height: 30%;
-  bottom: 8%;
-  background: var(--c-blob-c);
-  opacity: .40;
-  animation: aurora3 12s ease-in-out infinite;
-}
-@keyframes aurora1 {
-  0%,100% { transform: translateY(0)   scaleX(1);    }
-  50%      { transform: translateY(-6%) scaleX(1.04); }
-}
-@keyframes aurora2 {
-  0%,100% { transform: translateY(0)  scaleX(1);    }
-  50%      { transform: translateY(5%) scaleX(.96);  }
-}
-@keyframes aurora3 {
-  0%,100% { transform: translateY(0)   scaleX(1);   }
-  50%      { transform: translateY(-4%) scaleX(1.03); }
-}
-
-/* ── Gradient background ───────────────────────────── */
-.bg-gradient-style {
-  background-size: 220% 220%;
-  animation: gradShift 7s ease-in-out infinite alternate;
-}
-.bg-gradient-style.bg-work {
-  background-image: linear-gradient(135deg,
-    var(--c-base) 0%, var(--c-blob-a) 50%, var(--c-base) 100%);
-}
-.bg-gradient-style.bg-break {
-  background-image: linear-gradient(135deg,
-    var(--c-base) 0%, var(--c-blob-a) 50%, var(--c-base) 100%);
-}
-@keyframes gradShift {
-  0%   { background-position: 0%   50%; }
-  100% { background-position: 100% 50%; }
-}
+/* Gradient style bg is driven by JS (see Background.jsx), no CSS needed */
 
 .bg-work .blob-1 {
   width: 520px; height: 520px;

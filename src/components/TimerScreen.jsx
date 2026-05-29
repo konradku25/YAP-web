@@ -27,15 +27,16 @@ export default function TimerScreen({
   const [showColors, setShowColors] = useState(false);
   const [qrDataUrl,  setQrDataUrl]  = useState('');
 
-  const syncUrl = `${WEB_URL}/?s=${sessionId}`;
   const syncConnected = syncStatus === 'connected' && peers > 0;
 
+  // QR encodes just the session code — Android scans it and connects directly
   useEffect(() => {
-    QRCode.toDataURL(syncUrl, {
-      width: 180, margin: 1,
-      color: { dark: '#1a1114', light: '#ffffff' },
+    QRCode.toDataURL(sessionId, {
+      width: 180, margin: 2,
+      color: { dark: '#000000', light: '#ffffff' },
+      errorCorrectionLevel: 'M',
     }).then(setQrDataUrl);
-  }, [syncUrl]);
+  }, [sessionId]);
 
   const closeAll = () => { setShowSync(false); setShowColors(false); };
 

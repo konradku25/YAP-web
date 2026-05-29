@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { PHASE_KEYS, PHASE_LABELS, DEFAULTS } from '../hooks/usePhaseColors.js';
 
-export default function ColorSettings({ colors, onSetPhaseColor, onResetAll, onClose }) {
+const STYLES = [
+  { value: 'lava',     label: 'Lava Lamp' },
+  { value: 'aurora',   label: 'Aurora'    },
+  { value: 'gradient', label: 'Gradient'  },
+];
+
+export default function ColorSettings({ colors, onSetPhaseColor, onSetBackgroundStyle, onResetAll, onClose }) {
   const [activePhase, setActivePhase] = useState('WORK');
   const scheme = colors[activePhase];
 
@@ -14,6 +20,22 @@ export default function ColorSettings({ colors, onSetPhaseColor, onResetAll, onC
         <div className="palette-top">
           <span className="palette-title">Colour Palette</span>
           <button className="palette-close" onClick={onClose}>✕</button>
+        </div>
+
+        {/* Background style */}
+        <div className="style-picker">
+          <span className="swatch-label">Background Style</span>
+          <div className="style-options">
+            {STYLES.map(s => (
+              <button
+                key={s.value}
+                className={`style-btn ${(colors.backgroundStyle ?? 'lava') === s.value ? 'active' : ''}`}
+                onClick={() => onSetBackgroundStyle(s.value)}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Phase tabs */}

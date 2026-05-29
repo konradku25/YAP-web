@@ -12,7 +12,7 @@ function generateSessionId() {
 const SESSION_ID = generateSessionId();
 
 export default function App() {
-  const { colors, setPhaseColor, resetAll, applyRemoteColors } = usePhaseColors();
+  const { colors, setPhaseColor, setBackgroundStyle, resetAll, applyRemoteColors } = usePhaseColors();
 
   const applyRemoteRef = useRef(null);
   const { status, peers, devices, sendState, sendTheme } = useSync(
@@ -36,6 +36,10 @@ export default function App() {
       syncStatus={status}
       sessionId={SESSION_ID}
       colors={colors}
+      onSetBackgroundStyle={(style) => {
+        setBackgroundStyle(style);
+        if (status === 'connected') sendTheme({ ...colors, backgroundStyle: style });
+      }}
       onSetPhaseColor={(phase, field, value) => {
         setPhaseColor(phase, field, value);
         if (status === 'connected') sendTheme({ ...colors, [phase]: { ...colors[phase], [field]: value } });

@@ -10,7 +10,7 @@ const WEB_URL = 'https://yap-web-flame.vercel.app';
 
 export default function TimerScreen({
   state, peers, devices, syncStatus, sessionId,
-  colors, onSetPhaseColor, onResetColors,
+  colors, onSetPhaseColor, onSetBackgroundStyle, onResetColors,
   onStart, onPause, onReset, onSkip,
 }) {
   const { phase, remainingSeconds, isRunning, sessionInCycle } = state;
@@ -41,7 +41,7 @@ export default function TimerScreen({
 
   return (
     <div className={`screen ${isWork ? 'phase-work' : 'phase-break'}`} style={cssVars}>
-      <Background isWork={isWork} />
+      <Background isWork={isWork} style={colors.backgroundStyle ?? 'lava'} />
 
       {/* ── Header ── */}
       <header className="glass-bar">
@@ -83,6 +83,7 @@ export default function TimerScreen({
         <ColorSettings
           colors={colors}
           onSetPhaseColor={onSetPhaseColor}
+          onSetBackgroundStyle={onSetBackgroundStyle}
           onResetAll={onResetColors}
           onClose={() => setShowColors(false)}
         />

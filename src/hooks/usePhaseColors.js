@@ -10,10 +10,11 @@ export const PHASE_LABELS = {
 };
 
 export const DEFAULTS = {
-  WORK:        { base: '#180e10', accent: '#c0363e' },
-  SHORT_BREAK: { base: '#0e1418', accent: '#2a6080' },
-  LONG_BREAK:  { base: '#0a1510', accent: '#2a7a50' },
-  PAUSED:      { base: '#111111', accent: '#484848' },
+  WORK:        { base: '#1a1114', accent: '#e8b4b8' },
+  SHORT_BREAK: { base: '#11161a', accent: '#b4d4e8' },
+  LONG_BREAK:  { base: '#0f1a12', accent: '#b4e8c4' },
+  PAUSED:      { base: '#141414', accent: '#888888' },
+  backgroundStyle: 'lava', // 'lava' | 'aurora' | 'gradient'
 };
 
 function load() {
@@ -30,6 +31,14 @@ export function usePhaseColors() {
   const setPhaseColor = useCallback((phase, field, value) => {
     setColors(prev => {
       const next = { ...prev, [phase]: { ...prev[phase], [field]: value } };
+      localStorage.setItem('yap-colors-v2', JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
+  const setBackgroundStyle = useCallback((style) => {
+    setColors(prev => {
+      const next = { ...prev, backgroundStyle: style };
       localStorage.setItem('yap-colors-v2', JSON.stringify(next));
       return next;
     });
@@ -54,5 +63,5 @@ export function usePhaseColors() {
     } catch {}
   }, []);
 
-  return { colors, setPhaseColor, resetAll, applyRemoteColors };
+  return { colors, setPhaseColor, setBackgroundStyle, resetAll, applyRemoteColors };
 }
